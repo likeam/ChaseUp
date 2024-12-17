@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import helmet from "helmet";
+import connectDB from "./config/connectDB.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
   });
 });
 
+connectDB();
 app.listen(PORT, () => {
   console.log(`Server is Running on PORT : ${process.env.PORT}`);
 });
