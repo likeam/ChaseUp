@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import helmet from "helmet";
 import connectDB from "./config/connectDB.js";
+import userRouter from "./routes/userRoute.js";
 
 dotenv.config();
 
@@ -32,6 +33,8 @@ app.get("/", (req, res) => {
     message: "Server is sending message that Server is Running ",
   });
 });
+
+app.use("/api/v1/user", userRouter);
 
 connectDB();
 app.listen(PORT, () => {
