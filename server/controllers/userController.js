@@ -60,3 +60,8 @@ export async function registerUserController(req, res) {
     });
   }
 }
+
+export async function verifyEmailController() {
+  try {
+  } catch {}
+}
