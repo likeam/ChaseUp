@@ -1,7 +1,7 @@
 import sendEmail from "../config/sendEmail.js";
 import User from "./../models/userModel.js";
-import bcrypt from "bcryptjs";
-import verifyEmailTemplate from "../../utils/verifyEmailTemplat.js";
+import bcryptjs from "bcryptjs";
+import verifyEmailTemplate from "../utils/verifyEmailTemplat.js";
 
 export async function registerUserController(req, res) {
   try {
@@ -25,9 +25,9 @@ export async function registerUserController(req, res) {
       });
     }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcryptjs.genSalt(10);
 
-    const hashPassword = await bcrypt.hash(password, salt);
+    const hashPassword = await bcryptjs.hash(password, salt);
 
     const payload = { name, email, password: hashPassword };
 
@@ -61,34 +61,34 @@ export async function registerUserController(req, res) {
   }
 }
 
-export async function verifyEmailController() {
+export async function verifyEmailController(req, res) {
   try {
-    const { code } = request.body;
+    const { code } = req.body;
 
-    const user = await UserModel.findOne({ _id: code });
+    const user = await User.findOne({ _id: code });
 
     if (!user) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: "Invalid code",
         error: true,
         success: false,
       });
     }
 
-    const updateUser = await UserModel.updateOne(
+    const updateUser = await User.updateOne(
       { _id: code },
       {
         verify_email: true,
       }
     );
 
-    return response.json({
+    return res.json({
       message: "Verify email done",
       success: true,
       error: false,
     });
   } catch (error) {
-    return response.status(500).json({
+    return resq`-`.status(500).json({
       message: error.message || error,
       error: true,
       success: true,
