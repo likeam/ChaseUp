@@ -88,7 +88,7 @@ export async function verifyEmailController(req, res) {
       error: false,
     });
   } catch (error) {
-    return resq`-`.status(500).json({
+    return res.status(500).json({
       message: error.message || error,
       error: true,
       success: true,
