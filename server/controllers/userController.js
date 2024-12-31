@@ -6,6 +6,8 @@ import generateAccessToken from "../utils/generateAccessToken.js";
 import generateRefreshToken from "../utils/generateRefreshToken.js";
 import upload from "./../middleware/multer.js";
 import uploadImageCloudinary from "./../utils/uploadImageCloudinary.js";
+import generatedOtp from "../utils/generatedOtp.js";
+import forgotPasswordTemplate from "./../utils/forgotPasswordTemplate.js";
 
 // Create User Controller
 
@@ -213,12 +215,11 @@ export async function logoutController(req, res) {
   }
 }
 
-// Upload User Avatar
+// Upload User Avatar Controller
 export async function uploadAvatar(req, res) {
   try {
     const userId = req.userId;
     const image = req.file;
-    console.log("image", image);
 
     const upload = await uploadImageCloudinary(image);
 
@@ -240,6 +241,93 @@ export async function uploadAvatar(req, res) {
       message: error.message || error,
       error: true,
       success: true,
+    });
+  }
+}
+
+// Update User Details Controller
+
+export async function updateUserController(req, res) {
+  try {
+    const userId = req.userId;
+    const { name, email, mobile, password } = req.body;
+
+    let hashPassword = "";
+
+    if (password) {
+      const salt = await bcryptjs.genSalt(10);
+      hashPassword = await bcryptjs.hash(password, salt);
+    }
+
+    const updateUser = await User.updateOne(
+      { _id: userId },
+      {
+        ...(name && { name: name }),
+        ...(email && { email: email }),
+        ...(mobile && { mobile: mobile }),
+        ...(password && { password: hashPassword }),
+      }
+    );
+
+    return res.json({
+      message: "Updated Successfully",
+      error: false,
+      success: true,
+      data: updateUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+}
+
+// Forget Password Controller
+
+export async function forgotPasswordController(req, res) {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Email not available",
+        error: true,
+        success: false,
+      });
+    }
+
+    const otp = generatedOtp();
+
+    const expireTime = new Date() + 60 * 60 * 1000; // One Houre
+
+    const update = await User.findByIdAndUpdate(user._id, {
+      forgot_password_otp: otp,
+      forgot_password_expiry: new Date(expireTime).toISOString(),
+    });
+
+    await sendEmail({
+      sendTo: email,
+      subject: "Forget password form Chaseup",
+      html: forgotPasswordTemplate({
+        name: user.name,
+        otp: otp,
+      }),
+    });
+
+    return res.json({
+      message: "Check your Email",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
     });
   }
 }

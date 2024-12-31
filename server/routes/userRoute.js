@@ -1,8 +1,10 @@
 import express from "express";
 import {
+  forgotPasswordController,
   loginController,
   logoutController,
   registerUserController,
+  updateUserController,
   uploadAvatar,
   verifyEmailController,
 } from "../controllers/userController.js";
@@ -16,5 +18,7 @@ router.post("/verify-email", verifyEmailController);
 router.post("/login", loginController);
 router.get("/logout", auth, logoutController);
 router.put("/upload-avatar", auth, upload.single("avatar"), uploadAvatar);
+router.put("/update-user", auth, updateUserController);
+router.put("/forgot-password", forgotPasswordController);
 
 export default router;
