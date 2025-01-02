@@ -331,3 +331,64 @@ export async function forgotPasswordController(req, res) {
     });
   }
 }
+
+// Verify Forgot Pssword Otp
+
+export async function verifyForgotPasswordOtp(req, res) {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({
+        message: "Provide required fields email, otp",
+        error: true,
+        success: false,
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Email not  available",
+        error: true,
+        success: false,
+      });
+    }
+
+    const currentTime = new Date().toISOString();
+
+    if (user.forgot_password_expiry < currentTime) {
+      return res.status(400).json({
+        message: "Otp is Expired",
+        error: true,
+        success: false,
+      });
+    }
+
+    if (otp !== user.forgot_password_otp) {
+      return res.status(400).json({
+        message: "Invalid opt",
+        error: true,
+        success: false,
+      });
+    }
+
+    const updateUser = await User.findByIdAndUpdate(user?._id, {
+      forgot_password_otp: "",
+      forgot_password_expiry: "",
+    });
+
+    return res.json({
+      message: "Verify otp Successfully",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+}
