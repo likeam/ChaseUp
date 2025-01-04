@@ -12,7 +12,7 @@ const resend = new Resend(process.env.RESEND_API);
 const sendEmail = async ({ sendTo, subject, html }) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: "ChaeUp  <noreply@likeam@gmail.com>",
+      from: "ChaeUp  <nonreply@likeam@gmail.com>",
       to: sendTo,
       subject: subject,
       html: html,
