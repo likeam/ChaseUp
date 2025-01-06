@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 if (!process.env.MONGODB_URL) {
-  throw new Error("Please provide MONGODB_URL in .env fjile");
+  throw new Error("Please provide MONGODB_URL in .env file");
 }
 
 async function connectDB() {
