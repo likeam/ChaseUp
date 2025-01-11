@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 if (!process.env.MONGODB_URL) {
-  throw new Error("Please ");
+  throw new Error("Please valid mongodeb url");
 }
 
 async function connectDB() {
