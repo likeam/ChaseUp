@@ -9,7 +9,7 @@ import uploadImageCloudinary from "./../utils/uploadImageCloudinary.js";
 import generatedOtp from "../utils/generatedOtp.js";
 import forgotPasswordTemplate from "./../utils/forgotPasswordTemplate.js";
 
-// Create User Controller
+// Create User Controllers
 
 export async function registerUserController(req, res) {
   try {
@@ -69,7 +69,7 @@ export async function registerUserController(req, res) {
   }
 }
 
-// Verify Email Controller
+// Verify Email Controllers
 
 export async function verifyEmailController(req, res) {
   try {
@@ -106,7 +106,7 @@ export async function verifyEmailController(req, res) {
   }
 }
 
-// Login User Controller
+// Login User Controllers
 
 export async function loginController(req, res) {
   try {
@@ -182,7 +182,7 @@ export async function loginController(req, res) {
   }
 }
 
-// Logout User Controller
+// Logout User Controllers
 
 export async function logoutController(req, res) {
   try {
@@ -215,7 +215,7 @@ export async function logoutController(req, res) {
   }
 }
 
-// Upload User Avatar Controller
+// Upload User Avatar Controllers
 export async function uploadAvatar(req, res) {
   try {
     const userId = req.userId;
@@ -245,7 +245,7 @@ export async function uploadAvatar(req, res) {
   }
 }
 
-// Update User Details Controller
+// Update User Details Controllers
 
 export async function updateUserController(req, res) {
   try {
@@ -284,7 +284,7 @@ export async function updateUserController(req, res) {
   }
 }
 
-// Forget Password Controller
+// Forget Password Controllers
 
 export async function forgotPasswordController(req, res) {
   try {
