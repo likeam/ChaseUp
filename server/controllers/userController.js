@@ -284,7 +284,7 @@ export async function updateUserController(req, res) {
   }
 }
 
-// Forget Password Controllers
+// Forget Password Control
 
 export async function forgotPasswordController(req, res) {
   try {
